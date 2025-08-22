@@ -23,7 +23,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={styles.container}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <QueryClientProvider client={queryClient}>
-          <Stack>
+          <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" options={{ title: "Login" }} />
             <Stack.Screen name="search" options={{ title: "Search Flights" }} />
             <Stack.Screen name="results" options={{ title: "Flight Results" }} />

@@ -1,3 +1,5 @@
+import { ColorValue } from "react-native";
+
 export const Colors = {
   // Primary colors
   primary: "#2196F3",
@@ -42,7 +44,7 @@ export const Colors = {
 
   // Gradients (as arrays for LinearGradient)
   gradients: {
-    primary: ["#2196F3", "#1976D2"],
+    primary: ["#2196F3", "#1976D2"] as ColorValue[],
     secondary: ["#FF6B35", "#F7931E"],
     blue: ["rgba(33, 150, 243, 0.9)", "rgba(3, 169, 244, 0.7)", "rgba(0, 188, 212, 0.9)"],
   },
