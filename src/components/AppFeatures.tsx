@@ -1,3 +1,5 @@
+import { Colors } from "@/theme/colors";
+import { FontSizes } from "@/theme/fonts";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -7,15 +9,15 @@ export default function AppFeatures() {
     <View style={styles.featuresSection}>
       <View style={styles.featureRow}>
         <View style={styles.featureItem}>
-          <Ionicons name="search-outline" size={28} color="white" />
+          <Ionicons name="search-outline" size={28} color={Colors.white} />
           <Text style={styles.featureText}>Smart Search</Text>
         </View>
         <View style={styles.featureItem}>
-          <Ionicons name="pricetag-outline" size={28} color="white" />
+          <Ionicons name="pricetag-outline" size={28} color={Colors.white} />
           <Text style={styles.featureText}>Best Prices</Text>
         </View>
         <View style={styles.featureItem}>
-          <Ionicons name="shield-checkmark-outline" size={28} color="white" />
+          <Ionicons name="shield-checkmark-outline" size={28} color={Colors.white} />
           <Text style={styles.featureText}>Secure</Text>
         </View>
       </View>
@@ -36,8 +38,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   featureText: {
-    color: "white",
-    fontSize: 12,
+    color: Colors.white,
+    fontSize: FontSizes.xs,
     marginTop: 8,
     fontWeight: "500",
   },

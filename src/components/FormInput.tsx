@@ -1,3 +1,6 @@
+import { Colors } from "@/theme/colors";
+import { FontSizes } from "@/theme/fonts";
+import { Spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -56,13 +59,13 @@ const FormInput: React.FC<FormInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    marginBottom: Spacing.lg,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
   },
   errorText: {
-    fontSize: 12,
+    fontSize: FontSizes.xs,
     marginTop: -4,
   },
 });
