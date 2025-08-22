@@ -1,13 +1,14 @@
 import AuthContainer from "@/components/AuthContainer";
+import Button from "@/components/Button";
 import FormInput from "@/components/FormInput";
-import { BorderRadius, Colors, FontSizes, FontWeights, Spacing } from "@/theme";
-import { loginSchema } from "@/utils/schema";
+import { Colors, FontSizes, FontWeights, Spacing } from "@/theme";
+import { loginSchema } from "@/utils/validation";
+
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Button } from "react-native-paper";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -20,11 +21,12 @@ export default function HomeScreen() {
       cardSubtitle="Sign in to continue"
     >
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ email: "ade@gmail.com", password: "Asdf2qw" }}
         validationSchema={loginSchema}
         onSubmit={() => {
-          router.push("/search");
+          router.replace("/search");
         }}
+        enableReinitialize
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <>
@@ -53,15 +55,7 @@ export default function HomeScreen() {
               icon="lock-closed-outline"
             />
 
-            <Button
-              mode="contained"
-              onPress={handleSubmit as any}
-              style={styles.loginButton}
-              contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonText}
-            >
-              Sign In
-            </Button>
+            <Button onPress={handleSubmit as any} title="Sign In" />
 
             <View style={styles.divider}>
               <View style={styles.dividerLine} />
@@ -87,17 +81,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  loginButton: {
-    marginTop: Spacing.md,
-    borderRadius: BorderRadius.sm,
-  },
-  buttonContent: {
-    paddingVertical: Spacing.sm,
-  },
-  buttonText: {
-    fontSize: FontSizes.lg,
-    fontWeight: FontWeights.bold,
-  },
   divider: {
     flexDirection: "row",
     alignItems: "center",
