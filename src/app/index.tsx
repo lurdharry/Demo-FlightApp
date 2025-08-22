@@ -1,188 +1,134 @@
-import AppFeatures from "@/components/AppFeatures";
+import AuthContainer from "@/components/AuthContainer";
 import FormInput from "@/components/FormInput";
-import { Colors } from "@/theme/colors";
-import { FontSizes, FontWeights } from "@/theme/fonts";
-import { BorderRadius, Spacing } from "@/theme/spacing";
+import { BorderRadius, Colors, FontSizes, FontWeights, Spacing } from "@/theme";
 import { loginSchema } from "@/utils/schema";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Button } from "react-native-paper";
 
 export default function HomeScreen() {
   const router = useRouter();
 
   return (
-    <LinearGradient colors={[Colors.primary, Colors.primaryDark]} style={styles.gradient}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardView}
+    <AuthContainer
+      title="SkySearch"
+      subtitle="Your gateway to the world"
+      cardTitle="Welcome Back"
+      cardSubtitle="Sign in to continue"
+    >
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validationSchema={loginSchema}
+        onSubmit={() => {
+          router.push("/search");
+        }}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.container}>
-            {/* Header Section */}
-            <View style={styles.headerSection}>
-              <View style={styles.logoContainer}>
-                <Ionicons name="airplane" size={60} color="white" />
-              </View>
-              <Text style={styles.appName}>SkySearch</Text>
-              <Text style={styles.tagline}>Your gateway to the world</Text>
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+          <>
+            <FormInput
+              label="Email"
+              value={values.email}
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              error={errors.email}
+              touched={touched.email}
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              icon="mail-outline"
+            />
+
+            <FormInput
+              label="Password"
+              value={values.password}
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              error={errors.password}
+              touched={touched.password}
+              placeholder="Enter your password"
+              secureTextEntry
+              icon="lock-closed-outline"
+            />
+
+            <Button
+              mode="contained"
+              onPress={handleSubmit as any}
+              style={styles.loginButton}
+              contentStyle={styles.buttonContent}
+              labelStyle={styles.buttonText}
+            >
+              Sign In
+            </Button>
+
+            <View style={styles.divider}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>OR</Text>
+              <View style={styles.dividerLine} />
             </View>
 
-            {/* Login Form */}
-            <View style={styles.formCard}>
-              <Text style={styles.welcomeText}>Welcome Back</Text>
-              <Text style={styles.subtitleText}>Sign in to continue</Text>
+            <TouchableOpacity style={styles.linkButton} onPress={() => router.push("/signup")}>
+              <Text style={styles.linkText}>
+                Don't have an account? <Text style={styles.linkTextBold}>Sign Up</Text>
+              </Text>
+            </TouchableOpacity>
 
-              <Formik
-                initialValues={{ email: "", password: "" }}
-                validationSchema={loginSchema}
-                onSubmit={() => {
-                  router.push("/search");
-                }}
-              >
-                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-                  <View style={styles.form}>
-                    <FormInput
-                      label="Email"
-                      value={values.email}
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
-                      error={errors.email}
-                      touched={touched.email}
-                      placeholder="Enter your email"
-                      keyboardType="email-address"
-                      icon="mail-outline"
-                    />
-
-                    <FormInput
-                      label="Password"
-                      value={values.password}
-                      onChangeText={handleChange("password")}
-                      onBlur={handleBlur("password")}
-                      error={errors.password}
-                      touched={touched.password}
-                      placeholder="Enter your password"
-                      secureTextEntry
-                      icon="lock-closed-outline"
-                    />
-
-                    <Button
-                      mode="contained"
-                      onPress={handleSubmit as any}
-                      style={styles.loginButton}
-                      contentStyle={styles.loginButtonContent}
-                      labelStyle={styles.loginButtonText}
-                    >
-                      Sign In
-                    </Button>
-
-                    <View style={styles.demoNote}>
-                      <Ionicons name="information-circle-outline" size={16} color="#666" />
-                      <Text style={styles.demoNoteText}>Demo mode - Use any credentials</Text>
-                    </View>
-                  </View>
-                )}
-              </Formik>
+            <View style={styles.demoNote}>
+              <Ionicons name="information-circle-outline" size={16} color={Colors.textSecondary} />
+              <Text style={styles.demoNoteText}>Demo mode - Use any credentials</Text>
             </View>
-
-            {/* Features Section */}
-            <AppFeatures />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </LinearGradient>
+          </>
+        )}
+      </Formik>
+    </AuthContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-  },
-  keyboardView: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: Spacing.xl,
-    paddingTop: 60,
-    paddingBottom: Spacing.xxxl,
-  },
-  headerSection: {
-    alignItems: "center",
-    marginBottom: Spacing.xxxl,
-  },
-  logoContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: BorderRadius.round,
-    backgroundColor: Colors.backgroundOverlay,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: Spacing.xl,
-  },
-  appName: {
-    fontSize: FontSizes.header,
-    fontWeight: FontWeights.bold,
-    color: Colors.white,
-    marginBottom: Spacing.xs,
-  },
-  tagline: {
-    fontSize: FontSizes.lg,
-    color: Colors.whiteTransparent,
-  },
-  formCard: {
-    backgroundColor: Colors.white,
-    borderRadius: BorderRadius.xl,
-    padding: Spacing.xxl,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.15,
-    shadowRadius: 20,
-    elevation: 8,
-    marginBottom: Spacing.xxxl,
-  },
-  welcomeText: {
-    fontSize: FontSizes.xxxl,
-    fontWeight: FontWeights.bold,
-    color: Colors.textPrimary,
-    marginBottom: Spacing.xs,
-  },
-  subtitleText: {
-    fontSize: FontSizes.md,
-    color: Colors.textSecondary,
-    marginBottom: Spacing.xxl,
-  },
-  form: {
-    width: "100%",
-  },
   loginButton: {
     marginTop: Spacing.md,
     borderRadius: BorderRadius.sm,
-    backgroundColor: Colors.primary,
   },
-  loginButtonContent: {
+  buttonContent: {
     paddingVertical: Spacing.sm,
   },
-  loginButtonText: {
+  buttonText: {
     fontSize: FontSizes.lg,
+    fontWeight: FontWeights.bold,
+  },
+  divider: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: Spacing.xl,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Colors.border,
+  },
+  dividerText: {
+    marginHorizontal: Spacing.md,
+    color: Colors.textSecondary,
+    fontSize: FontSizes.sm,
+  },
+  linkButton: {
+    alignItems: "center",
+    marginBottom: Spacing.lg,
+  },
+  linkText: {
+    fontSize: FontSizes.md,
+    color: Colors.textSecondary,
+  },
+  linkTextBold: {
+    color: Colors.primary,
     fontWeight: FontWeights.bold,
   },
   demoNote: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: Spacing.xl,
     paddingTop: Spacing.xl,
     borderTopWidth: 1,
     borderTopColor: Colors.borderLight,
@@ -191,5 +137,22 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     fontSize: FontSizes.sm,
     marginLeft: Spacing.xs,
+  },
+  featuresSection: {
+    marginTop: Spacing.md,
+  },
+  featureRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  featureItem: {
+    alignItems: "center",
+    padding: Spacing.md,
+  },
+  featureText: {
+    color: Colors.white,
+    fontSize: FontSizes.xs,
+    marginTop: Spacing.sm,
+    fontWeight: FontWeights.medium,
   },
 });
