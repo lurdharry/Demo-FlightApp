@@ -26,15 +26,9 @@ export default function SearchScreen() {
   const handleSearch = useCallback(
     async (values: SearchFormValues) => {
       const searchParams = {
-        origin: values.origin,
-        destination: values.destination,
+        ...values,
         departDate: formatDate(values.departDate),
         returnDate: values.tripType === "roundtrip" ? formatDate(values.returnDate) : undefined,
-        adults: values.adults,
-        children: values.children,
-        infants: values.infants,
-        cabinClass: values.cabinClass,
-        tripType: values.tripType,
       };
 
       await mutateAsync(searchParams, {
@@ -52,7 +46,7 @@ export default function SearchScreen() {
           } else {
             Alert.alert(
               "No Results",
-              "Looks like we couldn’t find flights for your trip. Try changing your dates or search again."
+              "Looks like we couldn't find flights for your trip. Try changing your dates or search again."
             );
           }
         },
@@ -70,14 +64,11 @@ export default function SearchScreen() {
   const {
     formik,
     passengers,
-    isDepartPickerVisible,
-    toggleDepartPicker,
-    handleDepartDateConfirm,
-
-    isReturnPickerVisible,
-    toggleReturnPicker,
-    handleReturnDateConfirm,
-
+    activeDatePicker,
+    handleDateConfirm,
+    handleDateCancel,
+    showDepartPicker,
+    showReturnPicker,
     showPassengerModal,
     togglePassengerModal,
     handlePassengerUpdate,
@@ -99,14 +90,21 @@ export default function SearchScreen() {
             onChange={(value) => formik.setFieldValue("tripType", value)}
           />
 
-          <LocationInputs formik={formik} />
+          <LocationInputs
+            values={formik.values}
+            errors={formik.errors}
+            touched={formik.touched}
+            handleChange={formik.handleChange}
+            handleBlur={formik.handleBlur}
+            setFieldValue={formik.setFieldValue}
+          />
 
           <DateSelector
             departDate={formik.values.departDate}
             returnDate={formik.values.returnDate}
             showReturn={formik.values.tripType === "roundtrip"}
-            onDepartPress={() => toggleDepartPicker(true)}
-            onReturnPress={() => toggleReturnPicker(true)}
+            onDepartPress={showDepartPicker}
+            onReturnPress={showReturnPicker}
           />
 
           <View style={styles.passengerOptionContainer}>
@@ -130,24 +128,14 @@ export default function SearchScreen() {
         </Card.Content>
       </Card>
 
-      {/* Date Pickers */}
+      {/* Date Picker */}
       <DateTimePickerModal
-        isVisible={isDepartPickerVisible}
+        isVisible={activeDatePicker !== null}
         mode="date"
-        onConfirm={handleDepartDateConfirm}
-        onCancel={() => toggleDepartPicker(false)}
-        date={formik.values.departDate}
-        minimumDate={new Date()}
-        display="inline"
-      />
-
-      <DateTimePickerModal
-        isVisible={isReturnPickerVisible}
-        mode="date"
-        onConfirm={handleReturnDateConfirm}
-        onCancel={() => toggleReturnPicker(false)}
-        date={formik.values.returnDate}
-        minimumDate={formik.values.departDate}
+        onConfirm={handleDateConfirm}
+        onCancel={handleDateCancel}
+        date={activeDatePicker === "depart" ? formik.values.departDate : formik.values.returnDate}
+        minimumDate={activeDatePicker === "depart" ? new Date() : formik.values.departDate}
         display="inline"
       />
 

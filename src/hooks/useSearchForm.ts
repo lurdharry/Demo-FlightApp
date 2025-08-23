@@ -1,12 +1,12 @@
-import { PassengerType, SearchFormValues } from "@/types";
+import { DatePickerType, PassengerType, SearchFormValues } from "@/types";
 import { searchSchema } from "@/utils/validation";
 import { addDays } from "date-fns/addDays";
 import { FormikConfig, useFormik } from "formik";
 import { useCallback, useMemo, useState } from "react";
 
-const initialValues: SearchFormValues = {
-  origin: "Lagos",
-  destination: "London",
+const INITIAL_VALUES: SearchFormValues = {
+  origin: "",
+  destination: "",
   tripType: "roundtrip",
   departDate: new Date(),
   returnDate: addDays(new Date(), 7),
@@ -16,19 +16,24 @@ const initialValues: SearchFormValues = {
   cabinClass: "economy",
 };
 
+const MIN_PASSENGERS = {
+  adults: 1,
+  children: 0,
+  infants: 0,
+};
+
 interface useSearchFormProps {
   handleSubmit: FormikConfig<SearchFormValues>["onSubmit"];
 }
 
 export const useSearchForm = ({ handleSubmit }: useSearchFormProps) => {
   // Modal states
-  const [isDepartPickerVisible, setDepartPickerVisible] = useState(false);
-  const [isReturnPickerVisible, setReturnPickerVisible] = useState(false);
   const [showPassengerModal, setShowPassengerModal] = useState(false);
+  const [activeDatePicker, setActiveDatePicker] = useState<DatePickerType>(null);
 
   // form handler
   const formik = useFormik({
-    initialValues,
+    initialValues: INITIAL_VALUES,
     validationSchema: searchSchema,
     onSubmit: handleSubmit,
     enableReinitialize: true,
@@ -43,33 +48,39 @@ export const useSearchForm = ({ handleSubmit }: useSearchFormProps) => {
     [formik.values.adults, formik.values.children, formik.values.infants]
   );
 
-  const handleDepartDateConfirm = useCallback(
+  const handleDateConfirm = useCallback(
     (date: Date) => {
-      setDepartPickerVisible(false);
-      formik.setFieldValue("departDate", date);
-      // Auto-adjust return date to current date
-      if (formik.values.returnDate < date) {
+      if (activeDatePicker === "depart") {
+        formik.setFieldValue("departDate", date);
+        // Auto-adjust return date if it's before the new departure date
+        if (formik.values.returnDate && formik.values.returnDate < date) {
+          formik.setFieldValue("returnDate", date);
+        }
+      } else if (activeDatePicker === "return") {
         formik.setFieldValue("returnDate", date);
       }
+      setActiveDatePicker(null);
     },
-    [formik]
+    [activeDatePicker, formik]
   );
 
-  const handleReturnDateConfirm = useCallback(
-    (date: Date) => {
-      setReturnPickerVisible(false);
-      formik.setFieldValue("returnDate", date);
-    },
-    [formik]
-  );
+  const handleDateCancel = useCallback(() => {
+    setActiveDatePicker(null);
+  }, []);
 
-  // Passenger update handler
+  const showDepartPicker = useCallback(() => {
+    setActiveDatePicker("depart");
+  }, []);
+
+  const showReturnPicker = useCallback(() => {
+    setActiveDatePicker("return");
+  }, []);
+
   const handlePassengerUpdate = useCallback(
     (type: PassengerType, increment: boolean) => {
       const currentValue = formik.values[type];
-      const newValue = increment
-        ? currentValue + 1
-        : Math.max(type === "adults" ? 1 : 0, currentValue - 1);
+      const minValue = MIN_PASSENGERS[type];
+      const newValue = increment ? currentValue + 1 : Math.max(minValue, currentValue - 1);
       formik.setFieldValue(type, newValue);
     },
     [formik]
@@ -79,13 +90,11 @@ export const useSearchForm = ({ handleSubmit }: useSearchFormProps) => {
     formik,
     passengers,
 
-    isDepartPickerVisible,
-    toggleDepartPicker: (value: boolean) => setDepartPickerVisible(value),
-    handleDepartDateConfirm,
-
-    isReturnPickerVisible,
-    toggleReturnPicker: (value: boolean) => setReturnPickerVisible(value),
-    handleReturnDateConfirm,
+    activeDatePicker,
+    handleDateConfirm,
+    handleDateCancel,
+    showDepartPicker,
+    showReturnPicker,
 
     showPassengerModal,
     togglePassengerModal: (value: boolean) => setShowPassengerModal(value),

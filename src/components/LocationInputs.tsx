@@ -2,17 +2,25 @@ import { Colors, Shadows, Spacing } from "@/theme";
 import { SearchFormValues } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
 import { FormikProps } from "formik";
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
 import FormInput from "./FormInput";
 
-interface LocationInputsProps {
-  formik: FormikProps<SearchFormValues>;
-}
+type LocationInputsProps = Pick<
+  FormikProps<SearchFormValues>,
+  "values" | "errors" | "touched" | "handleChange" | "handleBlur" | "setFieldValue"
+>;
 
-const LocationInputs: React.FC<LocationInputsProps> = ({ formik }) => {
-  const { values, errors, touched, handleChange, handleBlur } = formik;
+const LocationInputs: React.FC<LocationInputsProps> = (props) => {
+  const { values, errors, touched, handleChange, handleBlur, setFieldValue } = props;
+
+  const swapLocations = useCallback(() => {
+    const tempOrigin = values.origin;
+    const tempDest = values.destination;
+    setFieldValue("origin", tempDest);
+    setFieldValue("destination", tempOrigin);
+  }, [setFieldValue, values.destination, values.origin]);
 
   return (
     <View style={styles.container}>
@@ -36,6 +44,7 @@ const LocationInputs: React.FC<LocationInputsProps> = ({ formik }) => {
         size={24}
         style={styles.swapButton}
         iconColor={Colors.primary}
+        onPress={swapLocations}
       />
 
       <FormInput
@@ -60,12 +69,7 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: Spacing.lg,
   },
-  locationInputs: {
-    position: "relative",
-  },
-
   swapButton: {
-    zIndex: 1,
     backgroundColor: Colors.white,
     alignSelf: "center",
     ...Shadows.sm,

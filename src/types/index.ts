@@ -1,6 +1,7 @@
 export type CabinClass = "economy" | "premium_economy" | "business" | "first";
 export type TripType = "oneway" | "roundtrip";
 export type PassengerType = "adults" | "infants" | "children";
+export type DatePickerType = "depart" | "return" | null;
 
 export type PassengerCount = Record<PassengerType, number>;
 
@@ -58,8 +59,8 @@ interface FlightSegment {
     name: string;
     type: string;
   };
-  departure: string; // ISO timestamp
-  arrival: string; // ISO timestamp
+  departure: string;
+  arrival: string;
   durationInMinutes: number;
   flightNumber: number;
   marketingCarrier: Carrier;
@@ -83,8 +84,8 @@ interface FlightLeg {
   durationInMinutes: number;
   stopCount: number;
   isSmallestStops: boolean;
-  departure: string; // ISO timestamp
-  arrival: string; // ISO timestamp
+  departure: string;
+  arrival: string;
   timeDeltaInDays: number;
   carriers: {
     operationType: string;
