@@ -7,21 +7,21 @@ import { FlightItinerary } from "@/types";
 import { formatDuration, formatTime } from "@/utils/formatDate";
 
 interface FlightCardProps {
-  item: FlightItinerary;
+  data: FlightItinerary;
 }
 
-const FlightCard = memo<FlightCardProps>(({ item }) => {
+const FlightCard = memo<FlightCardProps>(({ data }) => {
   return (
     <View style={styles.card}>
       {/* Price Badge */}
       <View style={styles.priceBadge}>
-        <Text style={styles.priceText}>{item.price.formatted}</Text>
+        <Text style={styles.priceText}>{data.price.formatted}</Text>
       </View>
 
-      {item.legs.map((leg, index) => (
+      {data.legs.map((leg, index) => (
         <View key={`${leg.id}_${index}`}>
           {/* Leg Header - Only show for multi-leg flights */}
-          {item.legs.length > 1 && (
+          {data.legs.length > 1 && (
             <View style={styles.legHeader}>
               <Text style={styles.legLabel}>{index === 0 ? "Outbound" : "Return"}</Text>
             </View>
@@ -76,20 +76,20 @@ const FlightCard = memo<FlightCardProps>(({ item }) => {
             <Text style={styles.airlineName}>{leg.carriers.marketing[0]?.name}</Text>
           </View>
 
-          {index < item.legs.length - 1 && <View style={styles.legDivider} />}
+          {index < data.legs.length - 1 && <View style={styles.legDivider} />}
         </View>
       ))}
 
       {/* Compact Footer */}
       <View style={styles.cardFooter}>
         <View style={styles.badges}>
-          {item.isSelfTransfer && (
+          {data.isSelfTransfer && (
             <View style={[styles.badge, styles.warningBadge]}>
               <Ionicons name="warning-outline" size={10} color={Colors.warning} />
               <Text style={styles.badgeText}>Self Transfer</Text>
             </View>
           )}
-          {!item.farePolicy.isChangeAllowed && (
+          {!data.farePolicy.isChangeAllowed && (
             <View style={styles.badge}>
               <Text style={styles.badgeText}>Non-refundable</Text>
             </View>

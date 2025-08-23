@@ -28,7 +28,7 @@ export default function ResultsScreen() {
       <FlatList
         data={searchResults}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <FlightCard item={item} />}
+        renderItem={({ item }) => <FlightCard data={item} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={<ListEmptyComponent />}
