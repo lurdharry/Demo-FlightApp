@@ -1,9 +1,13 @@
 import { PassengerType } from "@/types";
 
-export type PassengerInfoProp = Record<PassengerType, { label: string; age: string }>;
+interface PassengerInfoProp {
+  label: string;
+  age: string;
+  value: PassengerType;
+}
 
-export const PASSENGER_INFO: PassengerInfoProp = {
-  adults: { label: "Adults", age: "12+ years" },
-  children: { label: "Children", age: "2-11 years" },
-  infants: { label: "Infants", age: "Under 2" },
-};
+export const PASSENGER_INFO: PassengerInfoProp[] = [
+  { label: "Adults", age: "12+ years", value: "adults" },
+  { label: "Children", age: "2-11 years", value: "children" },
+  { label: "Infants", age: "Under 2", value: "infants" },
+];

@@ -28,19 +28,25 @@ const FormInput: React.FC<FormInputProps> = ({
         mode="outlined"
         error={hasError}
         secureTextEntry={secureTextEntry && !isPasswordVisible}
-        outlineColor="#e0e0e0"
-        activeOutlineColor="#2196F3"
+        outlineColor={Colors.border}
+        activeOutlineColor={Colors.primary}
         style={styles.input}
         left={
           icon ? (
-            <TextInput.Icon icon={() => <Ionicons name={icon} size={20} color="#666" />} />
+            <TextInput.Icon
+              icon={() => <Ionicons name={icon} size={20} color={Colors.textSecondary} />}
+            />
           ) : undefined
         }
         right={
           secureTextEntry ? (
             <TextInput.Icon
               icon={() => (
-                <Ionicons name={isPasswordVisible ? "eye-off" : "eye"} size={20} color="#666" />
+                <Ionicons
+                  name={isPasswordVisible ? "eye-off" : "eye"}
+                  size={20}
+                  color={Colors.textSecondary}
+                />
               )}
               onPress={() => setIsPasswordVisible(!isPasswordVisible)}
             />
