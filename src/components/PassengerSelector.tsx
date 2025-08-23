@@ -1,13 +1,8 @@
 import { BorderRadius, Colors, FontSizes, Spacing } from "@/theme";
+import { PassengerCount } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useMemo } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-
-export interface PassengerCount {
-  adults: number;
-  children: number;
-  infants: number;
-}
 
 interface PassengerSelectorProps {
   passengers: PassengerCount;

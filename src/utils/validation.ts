@@ -20,4 +20,15 @@ export const signupSchema = Yup.object().shape({
 export const searchSchema = Yup.object().shape({
   origin: Yup.string().required("Origin city required"),
   destination: Yup.string().required("Destination city required"),
+  tripType: Yup.string().oneOf(["oneway", "roundtrip"]).required(),
+  departDate: Yup.date().required(),
+  returnDate: Yup.date().when("tripType", {
+    is: "roundtrip",
+    then: (schema) => schema.required("Return date required for round trip"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  adults: Yup.number().min(1).required(),
+  children: Yup.number().min(0),
+  infants: Yup.number().min(0),
+  cabinClass: Yup.string().oneOf(["economy", "premium_economy", "business", "first"]).required(),
 });

@@ -1,4 +1,5 @@
 import { Colors, Shadows, Spacing } from "@/theme";
+import { SearchFormValues } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
 import { FormikProps } from "formik";
 import React from "react";
@@ -6,17 +7,11 @@ import { StyleSheet, View } from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
 import FormInput from "./FormInput";
 
-export interface LocationFormValues {
-  origin: string;
-  destination: string;
-}
-
 interface LocationInputsProps {
-  formik: FormikProps<LocationFormValues>;
-  onSwap: () => void;
+  formik: FormikProps<SearchFormValues>;
 }
 
-const LocationInputs: React.FC<LocationInputsProps> = ({ formik, onSwap }) => {
+const LocationInputs: React.FC<LocationInputsProps> = ({ formik }) => {
   const { values, errors, touched, handleChange, handleBlur } = formik;
 
   return (
@@ -39,7 +34,6 @@ const LocationInputs: React.FC<LocationInputsProps> = ({ formik, onSwap }) => {
       <IconButton
         icon="swap-vertical"
         size={24}
-        onPress={onSwap}
         style={styles.swapButton}
         iconColor={Colors.primary}
       />
