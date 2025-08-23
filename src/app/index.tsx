@@ -65,7 +65,7 @@ export default function HomeScreen() {
 
             <TouchableOpacity style={styles.linkButton} onPress={() => router.push("/signup")}>
               <Text style={styles.linkText}>
-                Don't have an account? <Text style={styles.linkTextBold}>Sign Up</Text>
+                {"Don't have an account?"} <Text style={styles.linkTextBold}>Sign Up</Text>
               </Text>
             </TouchableOpacity>
 
