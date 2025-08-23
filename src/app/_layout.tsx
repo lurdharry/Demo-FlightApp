@@ -1,3 +1,4 @@
+import { FlightSearchProvider } from "@/context/FlightSearchContext";
 import queryClient from "@/services/queryClient/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
@@ -20,12 +21,14 @@ export default function RootLayout() {
     <GestureHandlerRootView style={styles.container}>
       <PaperProvider theme={DefaultTheme}>
         <QueryClientProvider client={queryClient}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" options={{ title: "Login" }} />
-            <Stack.Screen name="search" options={{ title: "Search Flights" }} />
-            <Stack.Screen name="results" options={{ title: "Flight Results" }} />
-            <Stack.Screen name="signup" options={{ title: "Sign Up" }} />
-          </Stack>
+          <FlightSearchProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" options={{ title: "Login" }} />
+              <Stack.Screen name="search" options={{ title: "Search Flights" }} />
+              <Stack.Screen name="results" options={{ title: "Flight Results" }} />
+              <Stack.Screen name="signup" options={{ title: "Sign Up" }} />
+            </Stack>
+          </FlightSearchProvider>
         </QueryClientProvider>
       </PaperProvider>
     </GestureHandlerRootView>
