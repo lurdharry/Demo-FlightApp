@@ -21,7 +21,7 @@ export default function HomeScreen() {
       cardSubtitle="Sign in to continue"
     >
       <Formik
-        initialValues={{ email: "ade@gmail.com", password: "Asdf2qw" }}
+        initialValues={{ email: "", password: "" }}
         validationSchema={loginSchema}
         onSubmit={() => {
           router.replace("/search");
