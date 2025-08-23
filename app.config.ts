@@ -6,8 +6,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: config.slug ?? "my-app",
   ...config,
   extra: {
-    apiUrl: process.env.API_URL ?? "",
-    apiKey: process.env.API_KEY ?? "",
+    apiUrl: process.env.BASE_URL ?? "",
+    apiKey: process.env.RAPID_API_KEY ?? "",
     apiHost: process.env.RAPID_API_HOST ?? "",
   },
 });

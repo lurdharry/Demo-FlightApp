@@ -1,5 +1,8 @@
 export type CabinClass = "economy" | "premium_economy" | "business" | "first";
 export type TripType = "oneway" | "roundtrip";
+export type PassengerType = "adults" | "infants" | "children";
+
+export type PassengerCount = Record<PassengerType, number>;
 
 export interface Airport {
   skyId: string;
@@ -10,17 +13,15 @@ export interface Airport {
 
 export interface AirportResponse {
   data: {
-    data: {
-      navigation: {
-        relevantFlightParams: Airport;
-      };
-      presentation?: {
-        title: string;
-        suggestionTitle: string;
-        subtitle: string;
-      };
-    }[];
-  };
+    navigation: {
+      relevantFlightParams: Airport;
+    };
+    presentation?: {
+      title: string;
+      suggestionTitle: string;
+      subtitle: string;
+    };
+  }[];
 }
 
 interface Carrier {
@@ -92,7 +93,7 @@ interface FlightLeg {
   segments: FlightSegment[];
 }
 
-interface FlightItinerary {
+export interface FlightItinerary {
   id: string;
   price: {
     raw: number;
@@ -123,6 +124,7 @@ export interface FlightSearchResponse {
       totalResults: number;
     };
     itineraries: FlightItinerary[];
+    destinationImageUrl: string;
   };
 }
 
@@ -160,7 +162,3 @@ export interface SearchFormValues {
   infants: number;
   cabinClass: CabinClass;
 }
-
-export type PassengerType = "adults" | "infants" | "children";
-
-export type PassengerCount = Record<PassengerType, number>;
