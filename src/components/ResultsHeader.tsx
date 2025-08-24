@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useMemo } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { Colors, FontSizes, FontWeights, Spacing } from "@/theme";
 import { TripType } from "@/types";
@@ -39,9 +39,9 @@ const ResultsHeader: React.FC<ResultsHeaderProps> = ({
 
   return (
     <LinearGradient colors={[Colors.primary, Colors.primaryDark]} style={styles.header}>
-      <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
+      <Pressable style={styles.backButton} onPress={onBackPress}>
         <Ionicons name="arrow-back" size={24} color={Colors.white} />
-      </TouchableOpacity>
+      </Pressable>
       <View style={styles.headerContent}>
         <Text style={styles.route}>
           {origin} → {destination}

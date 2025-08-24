@@ -1,6 +1,6 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { memo } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { BorderRadius, Colors, FontSizes, FontWeights, Shadows, Spacing } from "@/theme";
 import { FlightItinerary } from "@/types";
@@ -10,103 +10,111 @@ interface FlightCardProps {
   data: FlightItinerary;
 }
 
-const FlightCard = memo<FlightCardProps>(({ data }) => {
-  return (
-    <View style={styles.card}>
-      {/* Price Badge */}
-      <View style={styles.priceBadge}>
-        <Text style={styles.priceText}>{data.price.formatted}</Text>
-      </View>
+const FlightCard = memo<FlightCardProps>(
+  ({ data }) => {
+    return (
+      <View style={styles.card}>
+        {/* Price Badge */}
+        <View style={styles.priceBadge}>
+          <Text style={styles.priceText}>{data.price.formatted}</Text>
+        </View>
 
-      {data.legs.map((leg, index) => (
-        <View key={`${leg.id}_${index}`}>
-          {/* Leg Header - Only show for multi-leg flights */}
-          {data.legs.length > 1 && (
-            <View style={styles.legHeader}>
-              <Text style={styles.legLabel}>{index === 0 ? "Outbound" : "Return"}</Text>
-            </View>
-          )}
-
-          <View style={styles.legContainer}>
-            {/* Departure */}
-            <View style={styles.endpoint}>
-              <Text style={styles.time}>{formatTime(leg.departure)}</Text>
-              <Text style={styles.airportCode}>{leg.origin.displayCode}</Text>
-              <Text style={styles.cityName}>{leg.origin.city}</Text>
-            </View>
-
-            {/* Flight Info */}
-            <View style={styles.flightInfo}>
-              <Text style={styles.duration}>{formatDuration(leg.durationInMinutes)}</Text>
-              <View style={styles.routeLine}>
-                <View style={styles.dot} />
-                <View style={styles.line} />
-                <Ionicons
-                  name="airplane"
-                  size={14}
-                  color={Colors.primary}
-                  style={{ transform: [{ rotate: "90deg" }] }}
-                />
+        {data.legs.map((leg, index) => (
+          <View key={`${leg.id}_${index}`}>
+            {/* Leg Header - Only show for multi-leg flights */}
+            {data?.legs?.length > 1 && (
+              <View style={styles.legHeader}>
+                <Text style={styles.legLabel}>{index === 0 ? "Outbound" : "Return"}</Text>
               </View>
-              {leg.stopCount === 0 ? (
-                <Text style={styles.nonstop}>Direct</Text>
-              ) : (
-                <Text style={styles.stops}>
-                  {leg.stopCount} stop{leg.stopCount > 1 ? "s" : ""}
-                </Text>
-              )}
-            </View>
+            )}
 
-            {/* Arrival */}
-            <View style={styles.endpoint}>
-              <Text style={styles.time}>{formatTime(leg.arrival)}</Text>
-              <Text style={styles.airportCode}>{leg.destination.displayCode}</Text>
-              <Text style={styles.cityName}>{leg.destination.city}</Text>
-              {leg.timeDeltaInDays > 0 && (
-                <View style={styles.nextDayBadge}>
-                  <Text style={styles.nextDayText}>+{leg.timeDeltaInDays}</Text>
+            <View style={styles.legContainer}>
+              {/* Departure */}
+              <View style={styles.endpoint}>
+                <Text style={styles.time}>{formatTime(leg.departure)}</Text>
+                <Text style={styles.airportCode}>{leg.origin.displayCode}</Text>
+                <Text style={styles.cityName}>{leg.origin.city}</Text>
+              </View>
+
+              {/* Flight Info */}
+              <View style={styles.flightInfo}>
+                <Text style={styles.duration}>{formatDuration(leg.durationInMinutes)}</Text>
+                <View style={styles.routeLine}>
+                  <View style={styles.dot} />
+                  <View style={styles.line} />
+                  <Ionicons
+                    name="airplane"
+                    size={14}
+                    color={Colors.primary}
+                    style={styles.airplane}
+                  />
                 </View>
-              )}
+                {leg.stopCount === 0 ? (
+                  <Text style={styles.nonstop}>Direct</Text>
+                ) : (
+                  <Text style={styles.stops}>
+                    {leg.stopCount} stop{leg.stopCount > 1 ? "s" : ""}
+                  </Text>
+                )}
+              </View>
+
+              {/* Arrival */}
+              <View style={styles.endpoint}>
+                <Text style={styles.time}>{formatTime(leg.arrival)}</Text>
+                <Text style={styles.airportCode}>{leg.destination.displayCode}</Text>
+                <Text style={styles.cityName}>{leg.destination.city}</Text>
+                {leg.timeDeltaInDays > 0 && (
+                  <View style={styles.nextDayBadge}>
+                    <Text style={styles.nextDayText}>+{leg.timeDeltaInDays}</Text>
+                  </View>
+                )}
+              </View>
             </View>
+
+            {/* Airline Info - More compact */}
+            <View style={styles.airlineContainer}>
+              <MaterialIcons name="flight" size={12} color={Colors.textSecondary} />
+              <Text style={styles.airlineName}>{leg.carriers.marketing[0]?.name}</Text>
+            </View>
+
+            {index < data.legs.length - 1 && <View style={styles.legDivider} />}
           </View>
+        ))}
 
-          {/* Airline Info - More compact */}
-          <View style={styles.airlineContainer}>
-            <MaterialIcons name="flight" size={12} color={Colors.textSecondary} />
-            <Text style={styles.airlineName}>{leg.carriers.marketing[0]?.name}</Text>
+        {/* Compact Footer */}
+        <View style={styles.cardFooter}>
+          <View style={styles.badges}>
+            {data.isSelfTransfer && (
+              <View style={[styles.badge, styles.warningBadge]}>
+                <Ionicons name="warning-outline" size={10} color={Colors.warning} />
+                <Text style={styles.badgeText}>Self Transfer</Text>
+              </View>
+            )}
+            {!data.farePolicy.isChangeAllowed && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>Non-refundable</Text>
+              </View>
+            )}
           </View>
-
-          {index < data.legs.length - 1 && <View style={styles.legDivider} />}
+          <Pressable style={styles.selectButton}>
+            <Text style={styles.selectText}>Select</Text>
+            <Ionicons name="chevron-forward" size={14} color={Colors.white} />
+          </Pressable>
         </View>
-      ))}
-
-      {/* Compact Footer */}
-      <View style={styles.cardFooter}>
-        <View style={styles.badges}>
-          {data.isSelfTransfer && (
-            <View style={[styles.badge, styles.warningBadge]}>
-              <Ionicons name="warning-outline" size={10} color={Colors.warning} />
-              <Text style={styles.badgeText}>Self Transfer</Text>
-            </View>
-          )}
-          {!data.farePolicy.isChangeAllowed && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>Non-refundable</Text>
-            </View>
-          )}
-        </View>
-        <TouchableOpacity style={styles.selectButton}>
-          <Text style={styles.selectText}>Select</Text>
-          <Ionicons name="chevron-forward" size={14} color={Colors.white} />
-        </TouchableOpacity>
       </View>
-    </View>
-  );
-});
+    );
+  },
+  (prevProps, nextProps) => {
+    return prevProps.data.id === nextProps.data.id, prevProps.data.legs === nextProps.data.legs;
+  }
+);
 
 FlightCard.displayName = "FlightCard";
 
 const styles = StyleSheet.create({
+  airplane: {
+    transform: [{ rotate: "90deg" }],
+  },
   card: {
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.lg,
@@ -116,7 +124,7 @@ const styles = StyleSheet.create({
   },
   priceBadge: {
     position: "absolute",
-    top: Spacing.sm,
+    top: Spacing.md,
     right: Spacing.sm,
     backgroundColor: Colors.primary,
     paddingHorizontal: Spacing.sm,

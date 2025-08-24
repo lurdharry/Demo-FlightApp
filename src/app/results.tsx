@@ -1,17 +1,25 @@
 import { useRouter } from "expo-router";
-import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React, { useCallback, useMemo } from "react";
+import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 
 import FlightCard from "@/components/FlightCard";
 import ListEmptyComponent from "@/components/ListEmptyComponent";
 import ResultsHeader from "@/components/ResultsHeader";
 import { useFlightSearchContext } from "@/context/FlightSearchContext";
 import { Colors, Spacing } from "@/theme";
+import { FlightItinerary } from "@/types";
 
 export default function ResultsScreen() {
   const { searchResults, origin, destination, departureDate, returnDate, tripType } =
     useFlightSearchContext();
   const router = useRouter();
+
+  const _renderItem: ListRenderItem<FlightItinerary> = useCallback(
+    ({ item }) => <FlightCard data={item} />,
+    []
+  );
+
+  const _listEmpty = useMemo(() => <ListEmptyComponent />, []);
 
   return (
     <View style={styles.container}>
@@ -28,10 +36,12 @@ export default function ResultsScreen() {
       <FlatList
         data={searchResults}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <FlightCard data={item} />}
+        renderItem={_renderItem}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        ListEmptyComponent={<ListEmptyComponent />}
+        ListEmptyComponent={_listEmpty}
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
       />
     </View>
   );

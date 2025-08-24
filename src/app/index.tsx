@@ -8,7 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -63,11 +63,11 @@ export default function HomeScreen() {
               <View style={styles.dividerLine} />
             </View>
 
-            <TouchableOpacity style={styles.linkButton} onPress={() => router.push("/signup")}>
+            <Pressable style={styles.linkButton} onPress={() => router.push("/signup")}>
               <Text style={styles.linkText}>
                 {"Don't have an account?"} <Text style={styles.linkTextBold}>Sign Up</Text>
               </Text>
-            </TouchableOpacity>
+            </Pressable>
 
             <View style={styles.demoNote}>
               <Ionicons name="information-circle-outline" size={16} color={Colors.textSecondary} />

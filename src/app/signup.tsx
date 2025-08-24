@@ -7,7 +7,7 @@ import { signupSchema } from "@/utils/validation";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Divider } from "react-native-paper";
 
 export default function SignupScreen() {
@@ -116,11 +116,11 @@ export default function SignupScreen() {
               <Divider style={styles.dividerLine} />
             </View>
 
-            <TouchableOpacity style={styles.linkButton} onPress={() => router.dismiss()}>
+            <Pressable style={styles.linkButton} onPress={() => router.dismiss()}>
               <Text style={styles.linkText}>
                 Already have an account? <Text style={styles.linkTextBold}>Sign In</Text>
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </>
         )}
       </Formik>

@@ -2,7 +2,7 @@ import { CABIN_CLASSES } from "@/constants/flight";
 import { BorderRadius, Colors, FontSizes, Spacing } from "@/theme";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Menu } from "react-native-paper";
 
 interface CabinClassSelectorProps {
@@ -21,11 +21,11 @@ const CabinClassSelector: React.FC<CabinClassSelectorProps> = ({ value, onChange
         visible={visible}
         onDismiss={() => setVisible(false)}
         anchor={
-          <TouchableOpacity style={styles.optionButton} onPress={() => setVisible(true)}>
+          <Pressable style={styles.optionButton} onPress={() => setVisible(true)}>
             <MaterialIcons name="airline-seat-recline-normal" size={20} color={Colors.primary} />
             <Text style={styles.optionText}>{selectedClass.label}</Text>
             <Ionicons name="chevron-down" size={16} color={Colors.textSecondary} />
-          </TouchableOpacity>
+          </Pressable>
         }
         anchorPosition="bottom"
       >

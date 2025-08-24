@@ -2,7 +2,7 @@ import { BorderRadius, Colors, FontSizes, Spacing } from "@/theme";
 import { PassengerCount } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useMemo } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 
 interface PassengerSelectorProps {
   passengers: PassengerCount;
@@ -16,11 +16,11 @@ const PassengerSelector: React.FC<PassengerSelectorProps> = ({ passengers, onPas
   }, [passengers]);
 
   return (
-    <TouchableOpacity style={styles.optionButton} onPress={onPassengerPress}>
+    <Pressable style={styles.optionButton} onPress={onPassengerPress}>
       <Ionicons name="people-outline" size={20} color={Colors.primary} />
       <Text style={styles.optionText}>{totalPassengersLabel}</Text>
       <Ionicons name="chevron-down" size={16} color={Colors.textSecondary} />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

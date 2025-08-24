@@ -1,7 +1,7 @@
 import { BorderRadius, Colors, FontSizes, FontWeights, Spacing } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 interface DateSelectorProps {
   departDate: Date;
@@ -28,7 +28,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.dateButton} onPress={onDepartPress}>
+      <Pressable style={styles.dateButton} onPress={onDepartPress}>
         <View style={styles.dateContent}>
           <Ionicons name="calendar-outline" size={20} color={Colors.primary} />
           <View style={styles.dateTextContainer}>
@@ -36,10 +36,10 @@ const DateSelector: React.FC<DateSelectorProps> = ({
             <Text style={styles.dateValue}>{formatDate(departDate)}</Text>
           </View>
         </View>
-      </TouchableOpacity>
+      </Pressable>
 
       {showReturn && returnDate && (
-        <TouchableOpacity style={styles.dateButton} onPress={onReturnPress}>
+        <Pressable style={styles.dateButton} onPress={onReturnPress}>
           <View style={styles.dateContent}>
             <Ionicons name="calendar-outline" size={20} color={Colors.primary} />
             <View style={styles.dateTextContainer}>
@@ -47,7 +47,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
               <Text style={styles.dateValue}>{formatDate(returnDate)}</Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </Pressable>
       )}
     </View>
   );
