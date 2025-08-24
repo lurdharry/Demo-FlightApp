@@ -1,50 +1,74 @@
-# Welcome to your Expo app 👋
+# ✈️ Flight Search App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile app for searching and booking flights worldwide. Built with Expo and TypeScript.
 
-## Get started
+## 🚀 Features
 
-1. Install dependencies
+- Search flights between major cities
+- One-way and round-trip booking
+- Add multiple passengers (adults, children, infants)
+- Choose cabin class (Economy, Business, First Class)
 
-   ```bash
-   npm install
-   ```
+## 💡 How It Works
 
-2. Start the app
+### Smart Airport Search
 
-   ```bash
-   npx expo start
-   ```
+Users can just type city names like "Lagos" or "London" instead of remembering airport codes. The app finds the airport details and automatically selects the first match to search for flights (as seen in the `searchFlightsWithCities` API method). This makes it easier for users who don't know airport codes.
 
-In the output, you'll find options to open the app in a
+### Fast API Calls
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The app fetches both origin and destination airports at the same time using parallel API calls. This makes the search faster compared to fetching them one by one. It also checks if airports exist before searching for flights, so we don't waste API calls on invalid routes.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🎯 What I Would Improve if Given more time
 
-## Get a fresh project
+### Airport Selection Modal
 
-When you're ready, run:
+Right now, when you type "London", the app just picks the first airport it finds. But London has 5 airports (Heathrow, Gatwick, Stansted, etc.). Same with New York - it has JFK, Newark, and LaGuardia.
+
+I would add a modal that shows all available airports for a city and lets users pick the one they want. This would include:
+
+- Search that waits for users to stop typing before calling the API (debouncing)
+- Show all airports with their codes and full names
+- Cache recent searches using React Query's built-in cache with staleTime and cacheTime configurations to persist search results across component unmounts
+- Much better experience for cities with multiple airports
+
+### Additional Features
+
+- Cache search results using React Query's useQuery hook to avoid redundant API calls
+- Work offline with saved data (using [MMKV storage](https://www.npmjs.com/package/react-native-mmkv))
+- Filter and sort flight results
+- Calendar view to see prices across different dates
+- Save favorite routes
+
+### Code Quality Improvements
+
+- **CI/CD Pipeline** - GitHub Actions for automated testing and deployment to TestFlight/Google Play
+- **Husky with pre-commit hooks** - To run linting and tests before commits
+- **Unit and integration tests** - Using Jest and React Native Testing Library
+- **E2E tests** - Using Detox for critical user flows
+- **Commit message conventions** - Following conventional commits format
+
+## 🔧 Tech Stack
+
+- **[React Native](https://reactnative.dev/) + [Expo](https://expo.dev/)** - Mobile development
+- **[TypeScript](https://www.typescriptlang.org/)** - Type safety
+- **[React Query](https://tanstack.com/query)** - Managing API data
+- **[Formik](https://formik.org/) + [Yup](https://github.com/jquense/yup)** - Forms and validation
+- **[React Native Paper](https://reactnativepaper.com/)** - UI components
+- **[Axios](https://axios-http.com/)** - API calls
+
+## 🚀 Getting Started
 
 ```bash
-npm run reset-project
+# Install dependencies
+npm install
+
+# Start the app
+npm run start
+
+# Run on iOS
+npm run ios
+
+# Run on Android
+npm run android
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
