@@ -1,7 +1,6 @@
 import { FlightSearchProvider } from "@/context/FlightSearchContext";
 import queryClient from "@/services/queryClient/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -9,14 +8,6 @@ import { MD3LightTheme as DefaultTheme, PaperProvider } from "react-native-paper
 import "react-native-reanimated";
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
     <GestureHandlerRootView style={styles.container}>
       <PaperProvider theme={DefaultTheme}>

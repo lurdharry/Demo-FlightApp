@@ -12,9 +12,14 @@ type LocationInputsProps = Pick<
   "values" | "errors" | "touched" | "handleChange" | "handleBlur" | "setFieldValue"
 >;
 
-const LocationInputs: React.FC<LocationInputsProps> = (props) => {
-  const { values, errors, touched, handleChange, handleBlur, setFieldValue } = props;
-
+const LocationInputs: React.FC<LocationInputsProps> = ({
+  values,
+  errors,
+  touched,
+  handleChange,
+  handleBlur,
+  setFieldValue,
+}) => {
   const swapLocations = useCallback(() => {
     const tempOrigin = values.origin;
     const tempDest = values.destination;

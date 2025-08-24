@@ -7,7 +7,7 @@ interface ButtonProps extends Omit<BTNProps, "children"> {
   title: string;
 }
 
-export default function Button({ title, onPress, ...rest }: ButtonProps) {
+const Button: React.FC<ButtonProps> = ({ title, onPress, ...rest }) => {
   return (
     <BTN
       mode="contained"
@@ -20,7 +20,9 @@ export default function Button({ title, onPress, ...rest }: ButtonProps) {
       {title}
     </BTN>
   );
-}
+};
+
+export default Button;
 
 const styles = StyleSheet.create({
   loginButton: {

@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function ListEmptyComponent() {
+const ListEmptyComponent: React.FC = () => {
   return (
     <View style={styles.empty}>
       <Ionicons name="airplane-outline" size={48} color={Colors.textSecondary} />
@@ -11,7 +11,9 @@ export default function ListEmptyComponent() {
       <Text style={styles.emptySubtext}>Try adjusting your search</Text>
     </View>
   );
-}
+};
+
+export default ListEmptyComponent;
 
 const styles = StyleSheet.create({
   empty: {

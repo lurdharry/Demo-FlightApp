@@ -64,6 +64,16 @@ export const useSearchForm = ({ handleSubmit }: useSearchFormProps) => {
     [activeDatePicker, formik]
   );
 
+  const handlePassengerUpdate = useCallback(
+    (type: PassengerType, increment: boolean) => {
+      const currentValue = formik.values[type];
+      const minValue = MIN_PASSENGERS[type];
+      const newValue = increment ? currentValue + 1 : Math.max(minValue, currentValue - 1);
+      formik.setFieldValue(type, newValue);
+    },
+    [formik]
+  );
+
   const handleDateCancel = useCallback(() => {
     setActiveDatePicker(null);
   }, []);
@@ -76,15 +86,9 @@ export const useSearchForm = ({ handleSubmit }: useSearchFormProps) => {
     setActiveDatePicker("return");
   }, []);
 
-  const handlePassengerUpdate = useCallback(
-    (type: PassengerType, increment: boolean) => {
-      const currentValue = formik.values[type];
-      const minValue = MIN_PASSENGERS[type];
-      const newValue = increment ? currentValue + 1 : Math.max(minValue, currentValue - 1);
-      formik.setFieldValue(type, newValue);
-    },
-    [formik]
-  );
+  const togglePassengerModal = useCallback((value: boolean) => {
+    setShowPassengerModal(value);
+  }, []);
 
   return {
     formik,
@@ -97,7 +101,7 @@ export const useSearchForm = ({ handleSubmit }: useSearchFormProps) => {
     showReturnPicker,
 
     showPassengerModal,
-    togglePassengerModal: (value: boolean) => setShowPassengerModal(value),
+    togglePassengerModal,
     handlePassengerUpdate,
   };
 };
